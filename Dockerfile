@@ -1,9 +1,9 @@
+# Main stage.
+FROM arm32v7/alpine as main
+
 ENV USER=borg
 ENV UID=1000
 ENV GID=23456
-
-# Main stage.
-FROM arm32v7/alpine as main
 
 LABEL maintainer="Riadh Habbachi<habbachi.riadh@gmail.com>" \
       version="1.1.3" \
