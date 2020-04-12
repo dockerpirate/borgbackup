@@ -1,3 +1,7 @@
+ENV USER=borg
+ENV UID=1000
+ENV GID=23456
+
 # Main stage.
 FROM arm32v7/alpine as main
 
@@ -13,7 +17,14 @@ RUN apk add --no-cache \
         sshfs \
         supervisor \
 
-RUN adduser -D -u 1000 -s /bin/sh borg && \
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "$(pwd)" \
+    --ingroup "$USER" \
+    --shell /bin/sh \
+    --uid "$UID" \
+    "$USER" \
     ssh-keygen -A && \
     mkdir /backups && \
     chown borg:borg /backups && \
