@@ -4,6 +4,7 @@ FROM arm32v7/alpine as main
 ENV USER=borg
 ENV UID=1000
 ENV GID=23456
+ENV GROUP=backup
 
 LABEL maintainer="Riadh Habbachi<habbachi.riadh@gmail.com>" \
       version="1.1.3" \
@@ -15,19 +16,19 @@ RUN apk add --no-cache \
         borgbackup \
         openssh \
         sshfs \
-        supervisor \
+        supervisor
 
-RUN adduser \
+RUN addgroup -g "$GID" "$GROUP" && \
+    adduser \
     --disabled-password \
     --gecos "" \
     --home "$(pwd)" \
-    --ingroup "$USER" \
+    --ingroup "$GROUP" \
     --shell /bin/sh \
-    --uid "$UID" \
-    "$USER" \
+    --uid "$UID" "$USER" && \
     ssh-keygen -A && \
     mkdir /backups && \
-    chown borg:borg /backups && \
+    chown "$USER":"$GROUP" /backups && \
     sed -i \
         -e 's/^#PasswordAuthentication yes$/PasswordAuthentication no/g' \
         -e 's/^PermitRootLogin without-password$/PermitRootLogin no/g' \
