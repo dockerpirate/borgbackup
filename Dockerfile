@@ -19,7 +19,7 @@ RUN apk add --no-cache \
         openssh \
         sshfs \
         supervisor \
-        openrc \
+        openrc
 
 RUN addgroup -g "$GID" "$GROUP" && \
     adduser \
@@ -38,9 +38,7 @@ RUN addgroup -g "$GID" "$GROUP" && \
         /etc/ssh/sshd_config
 
 RUN passwd -u borg && \
-      chmod +x /etc/periodic/hourly/borg_auto && \
-      rc-service crond start && \
-      rc-update add crond
+      chmod +x /etc/periodic/hourly/borg_auto
 
 COPY supervisord.conf /etc/supervisord.conf
 
