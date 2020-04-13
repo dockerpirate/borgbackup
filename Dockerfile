@@ -6,17 +6,20 @@ ENV UID=1000
 ENV GID=23456
 ENV GROUP=backup
 
-LABEL maintainer="Riadh Habbachi<habbachi.riadh@gmail.com>" \
-      version="1.1.3" \
+LABEL maintainer="dockerpirate" \
+      version="1.1.10" \
       description="Borgbackup docker image based on alpine. Deduplicating \
       archiver with compression and authenticated encryption."
+
+COPY borg_auto /etc/periodic/hourly
 
 # Install Borg & SSH.
 RUN apk add --no-cache \
         borgbackup \
         openssh \
         sshfs \
-        supervisor
+        supervisor \
+        openrc \
 
 RUN addgroup -g "$GID" "$GROUP" && \
     adduser \
@@ -34,7 +37,10 @@ RUN addgroup -g "$GID" "$GROUP" && \
         -e 's/^PermitRootLogin without-password$/PermitRootLogin no/g' \
         /etc/ssh/sshd_config
 
-RUN passwd -u borg
+RUN passwd -u borg && \
+      chmod +x /etc/periodic/hourly/borg_auto && \
+      rc-service crond start && \
+      rc-update add crond
 
 COPY supervisord.conf /etc/supervisord.conf
 
