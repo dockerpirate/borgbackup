@@ -38,9 +38,7 @@ RUN addgroup -g "$GID" "$GROUP" && \
         -e 's/^PermitRootLogin without-password$/PermitRootLogin no/g' \
         /etc/ssh/sshd_config
 
-RUN passwd -u borg && \
-      chmod +x /etc/periodic/hourly/borg_auto && \
-      crond -b -c /etc/crontabs/ -L /tmp/cron-log
+RUN passwd -u borg
 
 COPY supervisord.conf /etc/supervisord.conf
 
