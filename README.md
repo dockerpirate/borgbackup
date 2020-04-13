@@ -4,6 +4,9 @@ Fork of rhabbachi/docker-borgbackup
 
 ```
 $ docker run -d --name 'borgserver' \
+  -e PUID=1000 \
+  -e PGID=23456 \
+  -e TZ=Europe/London \
   --network host \
   -v "$HOME/.ssh:/home/borg/.ssh" \
   -v "<path/to/backups/root/folder/>:/backups" \
