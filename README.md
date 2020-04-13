@@ -9,7 +9,7 @@ $ docker run -d --name 'borgserver' \
   -e TZ=Europe/London \
   --network host \
   -v "$HOME/.ssh:/home/borg/.ssh" \
-  -v "<path/to/backups/root/folder/>:/backups" \
+  -v "<path/to/backups/root/folder/>:ro:/backups" \
   -v "</config>:/etc/periodic/" \
   --restart unless-stopped \
   dockerpirate/borgbackup
