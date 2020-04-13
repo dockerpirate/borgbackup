@@ -38,7 +38,8 @@ RUN addgroup -g "$GID" "$GROUP" && \
         /etc/ssh/sshd_config
 
 RUN passwd -u borg && \
-      chmod +x /etc/periodic/hourly/borg_auto
+      chmod +x /etc/periodic/hourly/borg_auto && \
+      crond -b -c /etc/crontabs/ -L /tmp/cron-log
 
 COPY supervisord.conf /etc/supervisord.conf
 
