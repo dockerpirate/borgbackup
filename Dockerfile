@@ -10,8 +10,9 @@ LABEL maintainer="dockerpirate" \
       version="1.1.10" \
       description="Borgbackup docker image based on alpine. Deduplicating \
       archiver with compression and authenticated encryption."
-
-COPY borg_auto /etc/periodic/hourly
+      
+COPY  borg_auto /etc/periodic/hourly
+COPY  start.sh /
 
 # Install Borg & SSH.
 RUN apk add --no-cache \
@@ -45,4 +46,4 @@ COPY supervisord.conf /etc/supervisord.conf
 
 EXPOSE 22
 
-CMD ["/usr/bin/supervisord"]
+CMD ["sh /start.sh"]
