@@ -27,3 +27,9 @@ Enter file in which to save the key (/home/$USER/.ssh/id_ed25519): /home/$USER/.
 
 ## Troubleshooting:
 First time you have to run in container "borg_auto" manually, because to do some interactive commands.
+
+```
+docker exec -it borgbackup /bin/sh
+sh /etc/periodic/hourly/borg_auto
+and follow instruction
+```
